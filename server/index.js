@@ -15,6 +15,10 @@ app.use('/', userRouter)
 
 app.use("/api/auth", authRouter);
 
+app.use((error, req, res, next) => {
+    res.status(error.statusCode).json({ msg: error.message })
+})
+
 const start = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI);

@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { errorHandler } = require('../utils/error');
 
 exports.login = async (req, res, next) => {
     const { email, password } = req.body;
@@ -23,7 +24,7 @@ exports.login = async (req, res, next) => {
 
         res.status(200).json({ token, ...rest })
     } catch (err) {
-        console.log(err);
+        next(errorHandler());
     }
 }
 
