@@ -13,7 +13,7 @@ exports.login = async (req, res, next) => {
         if (!user)
             return res.status(404).json({ msg: "User Not Found" });
 
-        const validPass = bcrypt.compare(password, user.password);
+        const validPass = await bcrypt.compare(password, user.password);
 
         if (!validPass)
             return res.status(400).json({ msg: "Email or password are invalid" });
@@ -43,7 +43,11 @@ exports.signup = async (req, res, next) => {
 
         const user = await User.create({ name, email, password: hashedValue });
 
-        res.status(201).json(user)
+
+        const { password: pass, ...rest } = user._doc;
+
+
+        res.status(201).json(rest)
     } catch (err) {
         console.log(err);
     }
